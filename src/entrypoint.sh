@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-set -o errexit
+set -e
+set -o pipefail
 
 KUBECTL_VER=$2
 if [[ "${KUBECTL_VER}" != "" ]]; then

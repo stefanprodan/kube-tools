@@ -16,9 +16,9 @@ inputs:
 
 runs:
   using: 'docker'
-  image: 'docker://stefanprodan/kube-tools:latest'
+  image: 'Dockerfile'
   args:
-    -  ${{ inputs.command }}
+    - ${{ inputs.command }}
     - ${{ inputs.kubectl }}
     - ${{ inputs.kustomize }}
     - ${{ inputs.helm }}

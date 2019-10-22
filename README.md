@@ -2,7 +2,7 @@
 
 ![CI](https://github.com/stefanprodan/kube-tools/workflows/CI/badge.svg)
 
-Github Action with Kubernetes tools: kubectl, kustomize, helm, kubeval, conftest, jq, yq, go
+Github Action with Kubernetes tools: kubectl, kustomize, helm, kubeval, conftest, jq, yq, go, bash
 
 GitHub Workflow example:
 
