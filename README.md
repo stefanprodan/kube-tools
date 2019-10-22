@@ -2,7 +2,7 @@
 
 ![CI](https://github.com/stefanprodan/kube-tools/workflows/CI/badge.svg)
 
-Github Action with Kubernetes tools: kubectl, kustomize, helm, kubeval, conftest, jq, yq
+Github Action with Kubernetes tools: kubectl, kustomize, helm, kubeval, conftest, jq, yq, go
 
 GitHub Workflow example:
 
@@ -31,4 +31,29 @@ jobs:
             conftest --version
             yq --version
             jq --version
+            go version
 ```
+
+CircleCI example:
+
+```yaml
+version: 2.1
+jobs:
+  test:
+    docker:
+      - image: stefanprodan/kube-tools
+    steps:
+      - checkout
+      - run:
+          name: Run Kubernetes tools
+          command: |
+            kubectl version --client
+            kustomize version
+            helm version --client
+            helmv3 version
+            kubeval --version
+            conftest --version
+            yq --version
+            jq --version
+            go version
+``` 

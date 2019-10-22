@@ -16,7 +16,7 @@ inputs:
 
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: 'docker://stefanprodan/kube-tools:latest'
   args:
     -  ${{ inputs.command }}
     - ${{ inputs.kubectl }}

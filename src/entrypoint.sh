@@ -24,4 +24,4 @@ echo ">>> Executing command <<<"
 echo ""
 echo ""
 
-bash -c "$1"
+bash -c "set -e;  set -o pipefail; $1"
