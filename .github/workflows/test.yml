@@ -3,22 +3,17 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  test-action:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Download tools
+      - name: conftest
         uses: ./
         with:
           command: |
-            kubectl version --client
-            kustomize version
-            helm version --client
-            helmv3 version
-            kubeval --version
-            conftest --version
-            yq --version
-            jq --version
-            go version
-
-            kustomize build test | kubeval --strict --ignore-missing-schemas
+            kustomize build test/kustomize | conftest test -p test/policy -
+      - name: kubeval
+        uses: ./
+        with:
+          command: |
+            kustomize build test/kustomize | kubeval --strict --ignore-missing-schemas
