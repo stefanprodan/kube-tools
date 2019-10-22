@@ -1,0 +1,24 @@
+name: 'Kubernetes Tools'
+description: 'Github Action with Kubernetes tools: kubectl, kustomize, helm, kubeval, conftest, jq, yq'
+author: 'Stefan Prodan'
+branding:
+  icon: 'check-square'
+  color: 'blue'
+inputs:
+  command:
+    description: 'command to run'
+  kubectl:
+    description: 'kubectl version e.g. 1.16.0'
+  kustomize:
+    description: 'kustomize version e.g. 3.2.3'
+  helm:
+    description: 'helm version e.g. 2.14.3'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    -  ${{ inputs.command }}
+    - ${{ inputs.kubectl }}
+    - ${{ inputs.kustomize }}
+    - ${{ inputs.helm }}
