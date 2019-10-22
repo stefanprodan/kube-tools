@@ -1,0 +1,23 @@
+name: CONTAINER
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Run in container
+        uses: docker://stefanprodan/kube-tools:latest
+        env:
+          command: |
+            kubectl version --client
+            kustomize version
+            helm version --client
+            helmv3 version
+            kubeval --version
+            conftest --version
+            yq --version
+            jq --version
+        with:
+          entrypoint: /run.sh
