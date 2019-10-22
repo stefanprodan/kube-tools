@@ -16,18 +16,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Download tools
+      - name: Run Kubernetes tools
         uses: stefanprodan/kube-tools@master
         with:
           kubectl: 1.16.2
           kustomize: 3.2.3
           helm: 2.14.3
-      - run: kubectl version --client
-      - run: kustomize version
-      - run: helm version --client
-      - run: helmv3 version
-      - run: kubeval --version
-      - run: conftest --version
-      - run: yq --version
-      - run: jq --version
+          command: |
+            kubectl version --client
+            kustomize version
+            helm version --client
+            helmv3 version
+            kubeval --version
+            conftest --version
+            yq --version
+            jq --version
 ```
