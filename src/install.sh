@@ -20,7 +20,7 @@ curl -sSL https://get.helm.sh/helm-v${HELM_V2}-linux-amd64.tar.gz | \
 tar xz && mv linux-amd64/helm /usr/local/bin/helm && rm -rf linux-amd64
 helm version --client
 
-HELM_V3=3.0.0-beta.4
+HELM_V3=3.0.0-beta.5
 echo "downloading helm ${HELM_V3}"
 curl -sSL https://get.helm.sh/helm-v${HELM_V3}-linux-amd64.tar.gz | \
 tar xz && mv linux-amd64/helm /usr/local/bin/helmv3 && rm -rf linux-amd64
