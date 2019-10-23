@@ -1,12 +1,13 @@
-name: 'Kubernetes Tools'
-description: 'Github Action with Kubernetes tools: kubectl, kustomize, helm, kubeval, conftest, jq, yq'
+name: 'Kubernetes toolset'
+description: 'Github Action with Kubernetes tools: kubectl, kustomize, helm, kubeval, conftest, jq, yq, go'
 author: 'Stefan Prodan'
 branding:
-  icon: 'check-square'
+  icon: 'command'
   color: 'blue'
 inputs:
   command:
     description: 'command to run'
+    required: true
   kubectl:
     description: 'kubectl version e.g. 1.16.0'
   kustomize:
