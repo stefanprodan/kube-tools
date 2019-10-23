@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Run Kubernetes tools
-        uses: stefanprodan/kube-tools@1.0.0
+        uses: stefanprodan/kube-tools@v1
         with:
           kubectl: 1.16.2
           kustomize: 3.2.3
@@ -37,7 +37,7 @@ version: 2.1
 jobs:
   test:
     docker:
-      - image: stefanprodan/kube-tools:1.0.0
+      - image: stefanprodan/kube-tools:v1
     steps:
       - checkout
       - run:
