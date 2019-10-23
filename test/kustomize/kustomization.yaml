@@ -1,4 +1,0 @@
-resources:
-  - hpa.yaml
-  - deployment.yaml
-

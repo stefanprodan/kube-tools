@@ -1,19 +1,22 @@
 name: CI
 
-on: [push, pull_request]
+on: [push]
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: conftest
+      - name: kube-tools
         uses: ./
         with:
           command: |
-            kustomize build test/kustomize | conftest test -p test/policy -
-      - name: kubeval
-        uses: ./
-        with:
-          command: |
-            kustomize build test/kustomize | kubeval --strict --ignore-missing-schemas
+            kubectl version --client
+            kustomize version
+            helm version --client
+            helmv3 version
+            kubeval --version
+            conftest --version
+            yq --version
+            jq --version
+            go version
