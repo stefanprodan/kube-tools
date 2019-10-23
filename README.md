@@ -27,7 +27,7 @@ jobs:
             echo "Run conftest"
             kustomize build test/kustomize | conftest test -p test/policy -
             echo "Run kubeval"
-            kustomize build test/kustomize | kubeval --strict --ignore-missing-schemas
+            kustomize build test/kustomize | kubeval --strict
 ```
 
 CircleCI example:
