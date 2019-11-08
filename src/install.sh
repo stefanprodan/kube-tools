@@ -10,7 +10,7 @@ kubectl version --client
 
 KUSTOMIZE=3.3.1
 echo "downloading kustomize ${KUSTOMIZE}"
-curl -sL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE}/kustomize_kustomize.v${KUSTOMIZE}_linux_amd64 \
+curl -sL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE}/kustomize_v${KUSTOMIZE}_linux_amd64.tar.gz \
 -o /usr/local/bin/kustomize && chmod +x /usr/local/bin/kustomize
 kustomize version
 
