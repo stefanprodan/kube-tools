@@ -8,7 +8,7 @@ curl -sL https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL}/b
 -o /usr/local/bin/kubectl && chmod +x /usr/local/bin/kubectl
 kubectl version --client
 
-KUSTOMIZE=3.3.1
+KUSTOMIZE=3.3.0
 echo "downloading kustomize ${KUSTOMIZE}"
 curl -sL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE}/kustomize_v${KUSTOMIZE}_linux_amd64.tar.gz \
 -o /usr/local/bin/kustomize && chmod +x /usr/local/bin/kustomize
