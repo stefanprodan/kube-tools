@@ -9,7 +9,7 @@ inputs:
     description: 'command to run'
     required: true
   kubectl:
-    description: 'kubectl version e.g. 1.16.0'
+    description: 'kubectl version e.g. 1.16.2'
   kustomize:
     description: 'kustomize version e.g. 3.4.0'
   helm:
@@ -24,3 +24,4 @@ runs:
     - ${{ inputs.kubectl }}
     - ${{ inputs.kustomize }}
     - ${{ inputs.helm }}
+    - ${{ inputs.helmv3 }}
