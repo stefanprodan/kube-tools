@@ -21,8 +21,9 @@ jobs:
         uses: stefanprodan/kube-tools@v1
         with:
           kubectl: 1.16.2
-          kustomize: 3.2.3
-          helm: 2.14.3
+          kustomize: 3.4.0
+          helm: 2.16.1
+          helmv3: 3.0.0
           command: |
             echo "Run conftest"
             kustomize build test/kustomize | conftest test -p test/policy -
