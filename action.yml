@@ -11,15 +11,17 @@ inputs:
   kubectl:
     description: 'kubectl version e.g. 1.16.0'
   kustomize:
-    description: 'kustomize version e.g. 3.2.3'
+    description: 'kustomize version e.g. 3.4.0'
   helm:
-    description: 'helm version e.g. 2.14.3'
-
+    description: 'helm version e.g. 2.16.1'
+  helmv3:
+    description: 'helm version e.g. 3.0.0'
 runs:
   using: 'docker'
-  image: 'docker://stefanprodan/kube-tools:v1'
+  image: 'Dockerfile'
   args:
     - ${{ inputs.command }}
     - ${{ inputs.kubectl }}
     - ${{ inputs.kustomize }}
     - ${{ inputs.helm }}
+    - ${{ inputs.helmv3 }}
