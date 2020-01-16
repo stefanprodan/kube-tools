@@ -9,13 +9,13 @@ inputs:
     description: 'command to run'
     required: true
   kubectl:
-    description: 'kubectl version e.g. 1.16.2'
+    description: 'kubectl version e.g. 1.17.0'
   kustomize:
-    description: 'kustomize version e.g. 3.4.0'
+    description: 'kustomize version e.g. 3.5.4'
   helm:
     description: 'helm version e.g. 2.16.1'
   helmv3:
-    description: 'helm version e.g. 3.0.0'
+    description: 'helm version e.g. 3.0.2'
 runs:
   using: 'docker'
   image: 'Dockerfile'
