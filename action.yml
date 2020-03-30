@@ -9,16 +9,16 @@ inputs:
     description: 'command to run'
     required: true
   kubectl:
-    description: 'kubectl version e.g. 1.16.0'
+    description: 'kubectl version'
   kustomize:
-    description: 'kustomize version e.g. 3.4.0'
+    description: 'kustomize version'
   helm:
-    description: 'helm version e.g. 2.16.1'
+    description: 'helm version'
   helmv3:
-    description: 'helm version e.g. 3.0.0'
+    description: 'helm version'
 runs:
   using: 'docker'
-  image: 'docker://stefanprodan/kube-tools:v1.3.0'
+  image: 'docker://stefanprodan/kube-tools:v1.4.0'
   args:
     - ${{ inputs.command }}
     - ${{ inputs.kubectl }}
