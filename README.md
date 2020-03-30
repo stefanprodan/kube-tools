@@ -20,10 +20,10 @@ jobs:
       - name: Run Kubernetes tools
         uses: stefanprodan/kube-tools@v1
         with:
-          kubectl: 1.16.2
+          kubectl: 1.18.0
           kustomize: 3.4.0
-          helm: 2.16.1
-          helmv3: 3.0.0
+          helm: 2.16.6
+          helmv3: 3.1.2
           command: |
             echo "Run conftest"
             kustomize build test/kustomize | conftest test -p test/policy -
