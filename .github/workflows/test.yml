@@ -6,7 +6,7 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: conftest
         uses: ./
         with:
@@ -17,3 +17,16 @@ jobs:
         with:
           command: |
             kustomize build test/kustomize | kubeval --strict --ignore-missing-schemas
+      - name: tools
+        uses: ./
+        with:
+          command: |
+            kubectl version --client
+            kustomize version
+            helm version --client
+            helmv3 version
+            kubeval --version
+            conftest --version
+            yq --version
+            jq --version
+            go version
