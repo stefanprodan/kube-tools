@@ -22,7 +22,7 @@ if [[ "${HELM_VER}" != "" ]]; then
 fi
 
 HELM3_VER=$5
-if [[ "${HELM_VER}" != "" ]]; then
+if [[ "${HELM3_VER}" != "" ]]; then
   curl -sL https://get.helm.sh/helm-v${HELM3_VER}-linux-amd64.tar.gz | \
   tar xz && mv linux-amd64/helm /usr/local/bin/helmv3 && rm -rf linux-amd64
 fi
