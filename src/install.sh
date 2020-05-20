@@ -26,7 +26,7 @@ curl -sSL https://get.helm.sh/helm-v${HELM_V3}-linux-amd64.tar.gz | \
 tar xz && mv linux-amd64/helm /usr/local/bin/helmv3 && rm -rf linux-amd64
 helmv3 version
 
-KUBEVAL=0.14.0
+KUBEVAL=0.15.0
 echo "downloading kubeval ${KUBEVAL}"
 curl -sL https://github.com/instrumenta/kubeval/releases/download/${KUBEVAL}/kubeval-linux-amd64.tar.gz | \
 tar xz && mv kubeval /usr/local/bin/kubeval
