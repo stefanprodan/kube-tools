@@ -19,12 +19,16 @@ echo "downloading helm ${HELM_V2}"
 curl -sSL https://get.helm.sh/helm-v${HELM_V2}-linux-amd64.tar.gz | \
 tar xz && mv linux-amd64/helm /usr/local/bin/helm && rm -rf linux-amd64
 helm version --client
+echo "Install helm-kubeval plugin"
+helm plugin install https://github.com/instrumenta/helm-kubeval
 
 HELM_V3=3.1.2
 echo "downloading helm ${HELM_V3}"
 curl -sSL https://get.helm.sh/helm-v${HELM_V3}-linux-amd64.tar.gz | \
 tar xz && mv linux-amd64/helm /usr/local/bin/helmv3 && rm -rf linux-amd64
 helmv3 version
+echo "Install helm-kubeval plugin"
+helmv3 plugin install https://github.com/instrumenta/helm-kubeval
 
 KUBEVAL=0.14.0
 echo "downloading kubeval ${KUBEVAL}"
