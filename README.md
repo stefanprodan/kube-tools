@@ -19,18 +19,18 @@ jobs:
   test-action:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Run Kubernetes tools
         uses: stefanprodan/kube-tools@v1
         with:
-          kubectl: 1.18.0
-          kustomize: 3.4.0
-          helm: 2.16.5
-          helmv3: 3.1.2
+          kubectl: 1.18.2
+          kustomize: 3.5.5
+          helm: 2.16.7
+          helmv3: 3.2.1
           command: |
             echo "Run conftest"
             kustomize build test/kustomize | conftest test -p test/policy -
             echo "Run kubeval"
-            kustomize build test/kustomize | kubeval --strict
+            helmv3 template ./charts/test | kubeval --strict
 ```
 
