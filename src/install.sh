@@ -32,7 +32,7 @@ curl -sL https://github.com/instrumenta/kubeval/releases/download/${KUBEVAL}/kub
 tar xz && mv kubeval /usr/local/bin/kubeval
 kubeval --version
 
-CONFTEST=0.18.2
+CONFTEST=0.19.0
 echo "downloading conftest ${CONFTEST}"
 curl -sL https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST}/conftest_${CONFTEST}_Linux_x86_64.tar.gz | \
 tar xz && mv conftest /usr/local/bin/conftest
