@@ -38,6 +38,12 @@ curl -sL https://github.com/open-policy-agent/conftest/releases/download/v${CONF
 tar xz && mv conftest /usr/local/bin/conftest
 conftest --version
 
+KUBESEAL=0.12.5
+echo "downloading kubeseal ${KUBESEAL}"
+curl -sL https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL}/kubeseal-linux-amd64 \
+-o /usr/local/bin/kubeseal && chmod +x /usr/local/bin/kubeseal
+kubeseal --version
+
 echo "downloading yq"
 curl -sL https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 \
 -o /usr/local/bin/yq && chmod +x /usr/local/bin/yq
