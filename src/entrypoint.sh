@@ -27,6 +27,12 @@ if [[ "${HELM3_VER}" != "" ]]; then
   tar xz && mv linux-amd64/helm /usr/local/bin/helmv3 && rm -rf linux-amd64
 fi
 
+KUBESEAL_VER=$6
+if [[ "${KUBESEAL_VER}" != "" ]]; then
+  curl -sL https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VER}/kubeseal-linux-amd64 \
+  -o /usr/local/bin/kubeseal && chmod +x /usr/local/bin/kubeseal
+fi
+
 echo ">>> Executing command <<<"
 echo ""
 echo ""
