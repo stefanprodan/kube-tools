@@ -27,3 +27,4 @@ runs:
     - ${{ inputs.kustomize }}
     - ${{ inputs.helm }}
     - ${{ inputs.helmv3 }}
+    - ${{ inputs.kubeseal }}
