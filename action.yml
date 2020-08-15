@@ -16,6 +16,8 @@ inputs:
     description: 'helm version'
   helmv3:
     description: 'helm version'
+  kubeseal:
+    description: 'kubeseal version'
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -25,3 +27,4 @@ runs:
     - ${{ inputs.kustomize }}
     - ${{ inputs.helm }}
     - ${{ inputs.helmv3 }}
+    - ${{ inputs.kubeseal }}

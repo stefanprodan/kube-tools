@@ -27,6 +27,7 @@ jobs:
             helmv3 version
             kubeval --version
             conftest --version
+            kubeseal --version
             yq --version
             jq --version
             go version
