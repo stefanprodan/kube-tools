@@ -28,6 +28,7 @@ jobs:
           helm: 2.16.7
           helmv3: 3.2.1
           kubeseal: 0.12.5
+          kubeaudit: 0.11.5
           command: |
             echo "Run conftest"
             kustomize build test/kustomize | conftest test -p test/policy -

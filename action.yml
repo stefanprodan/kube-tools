@@ -1,5 +1,5 @@
 name: 'Kubernetes toolset'
-description: 'Github Action with Kubernetes tools: kubectl, kustomize, helm, kubeval, conftest, jq, yq, go'
+description: 'Github Action with Kubernetes tools: kubectl, kustomize, helm, kubeval, kubeaudit, conftest, jq, yq, go'
 author: 'Stefan Prodan'
 branding:
   icon: 'command'
@@ -18,6 +18,8 @@ inputs:
     description: 'helm version'
   kubeseal:
     description: 'kubeseal version'
+  kubeaudit:
+    description: 'kubeaudit version'
 runs:
   using: 'docker'
   image: 'Dockerfile'

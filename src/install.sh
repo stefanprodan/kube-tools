@@ -32,6 +32,12 @@ curl -sL https://github.com/instrumenta/kubeval/releases/download/${KUBEVAL}/kub
 tar xz && mv kubeval /usr/local/bin/kubeval
 kubeval --version
 
+KUBEAUDIT=0.11.5
+echo "downloading kubeaudit ${KUBEAUDIT}"
+curl -sSL https://github.com/Shopify/kubeaudit/releases/download/v${KUBEAUDIT}/kubeaudit_${KUBEAUDIT}_linux_amd64.tar.gz | \
+tar xz && mv kubeaudit /usr/local/bin/kubeaudit
+kubeaudit --help
+
 CONFTEST=0.19.0
 echo "downloading conftest ${CONFTEST}"
 curl -sL https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST}/conftest_${CONFTEST}_Linux_x86_64.tar.gz | \
