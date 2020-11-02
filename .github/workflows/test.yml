@@ -28,6 +28,7 @@ jobs:
             kubeval --version
             conftest --version
             kubeseal --version
+            kubeaudit --help
             yq --version
             jq --version
             go version
