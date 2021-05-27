@@ -33,6 +33,12 @@ if [[ "${KUBESEAL_VER}" != "" ]]; then
   -o /usr/local/bin/kubeseal && chmod +x /usr/local/bin/kubeseal
 fi
 
+KUBEVAL_VER=$7
+if [[ "${KUBEVAL_VER}" != "" ]]; then
+  curl -sL https://github.com/instrumenta/kubeval/releases/download/${KUBEVAL_VER}/kubeval-linux-amd64.tar.gz | \
+  tar xz && mv kubeval /usr/local/bin/kubeval
+fi
+
 echo ">>> Executing command <<<"
 echo ""
 echo ""
