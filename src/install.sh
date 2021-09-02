@@ -38,7 +38,7 @@ curl -sSL https://github.com/Shopify/kubeaudit/releases/download/v${KUBEAUDIT}/k
 tar xz && mv kubeaudit /usr/local/bin/kubeaudit
 kubeaudit --help
 
-CONFTEST=0.19.0
+CONFTEST=0.27.0
 echo "downloading conftest ${CONFTEST}"
 curl -sL https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST}/conftest_${CONFTEST}_Linux_x86_64.tar.gz | \
 tar xz && mv conftest /usr/local/bin/conftest
