@@ -39,6 +39,12 @@ if [[ "${KUBEVAL_VER}" != "" ]]; then
   tar xz && mv kubeval /usr/local/bin/kubeval
 fi
 
+CONFTEST_VER=$8
+if [[ "${CONFTEST_VER}" != "" ]]; then
+  wget -O conftest https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST_VER}/conftest_${CONFTEST_VER}_Linux_x86_64.tar.gz -q
+  tar xzf conftest && mv conftest /usr/local/bin
+fi
+
 echo ">>> Executing command <<<"
 echo ""
 echo ""

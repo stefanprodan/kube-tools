@@ -22,6 +22,8 @@ inputs:
     description: 'kubeaudit version'
   kubeval:
     description: 'kubeval version'
+  conftest:
+    description: 'conftest version'
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -32,4 +34,5 @@ runs:
     - ${{ inputs.helm }}
     - ${{ inputs.helmv3 }}
     - ${{ inputs.kubeseal }}
-    - ${{ inputs.kubeval }}    
+    - ${{ inputs.kubeval }}
+    - ${{ inputs.conftest }}
