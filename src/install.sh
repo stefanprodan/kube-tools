@@ -44,7 +44,7 @@ curl -sL https://github.com/open-policy-agent/conftest/releases/download/v${CONF
 tar xz && mv conftest /usr/local/bin/conftest
 conftest --version
 
-KUBESEAL=0.16.1
+KUBESEAL=0.16.0
 echo "downloading kubeseal ${KUBESEAL}"
 curl -sL https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL}/kubeseal-linux-amd64 \
 -o /usr/local/bin/kubeseal && chmod +x /usr/local/bin/kubeseal
