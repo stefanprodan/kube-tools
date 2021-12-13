@@ -45,6 +45,12 @@ if [[ "${CONFTEST_VER}" != "" ]]; then
   tar xzf conftest && mv conftest /usr/local/bin
 fi
 
+KUBECONFORM_VER=$9
+if [[ "${KUBECONFORM_VER}" != "" ]]; then
+  curl -sSL https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VER}/kubeconform-linux-amd64.tar.gz | \
+  tar xz && mv kubeconform /usr/local/bin/kubeconform
+fi
+
 echo ">>> Executing command <<<"
 echo ""
 echo ""

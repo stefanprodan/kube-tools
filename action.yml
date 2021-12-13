@@ -24,6 +24,8 @@ inputs:
     description: 'kubeval version'
   conftest:
     description: 'conftest version'
+  kubeconform:
+    description: 'kubeconform version'
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -36,3 +38,4 @@ runs:
     - ${{ inputs.kubeseal }}
     - ${{ inputs.kubeval }}
     - ${{ inputs.conftest }}
+    - ${{ inputs.kubeconform }}
