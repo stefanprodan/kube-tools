@@ -59,3 +59,9 @@ echo "downloading jq"
 curl -sL https://github.com/stedolan/jq/releases/latest/download/jq-linux64 \
 -o /usr/local/bin/jq && chmod +x /usr/local/bin/jq
 jq --version
+
+KUBECONFORM="v0.4.12"
+echo "downloading kubeconform ${KUBECONFORM}"
+curl -sSL https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM}/kubeconform-linux-amd64.tar.gz | \
+tar xz && mv kubeconform /usr/local/bin/kubeconform
+kubeconform --help
