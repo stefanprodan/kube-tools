@@ -1,5 +1,5 @@
 name: 'Kubernetes toolset'
-description: 'Github Action with Kubernetes tools: kubectl, kustomize, helm, kubeval, conftest, jq, yq, go'
+description: 'Github Action with Kubernetes tools: kubectl, kustomize, helm, kubeval, kubeaudit, conftest, jq, yq, go'
 author: 'Stefan Prodan'
 branding:
   icon: 'command'
@@ -16,12 +16,26 @@ inputs:
     description: 'helm version'
   helmv3:
     description: 'helm version'
+  kubeseal:
+    description: 'kubeseal version'
+  kubeaudit:
+    description: 'kubeaudit version'
+  kubeval:
+    description: 'kubeval version'
+  conftest:
+    description: 'conftest version'
+  kubeconform:
+    description: 'kubeconform version'
 runs:
   using: 'docker'
-  image: 'docker://stefanprodan/kube-tools:v1.5.0'
+  image: 'docker://ghcr.io/stefanprodan/kube-tools:v1.7.0-792b5242'
   args:
     - ${{ inputs.command }}
     - ${{ inputs.kubectl }}
     - ${{ inputs.kustomize }}
     - ${{ inputs.helm }}
     - ${{ inputs.helmv3 }}
+    - ${{ inputs.kubeseal }}
+    - ${{ inputs.kubeval }}
+    - ${{ inputs.conftest }}
+    - ${{ inputs.kubeconform }}
