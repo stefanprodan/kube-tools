@@ -38,3 +38,7 @@ jobs:
             helmv3 template ./charts/test | kubeval --strict
 ```
 
+Container images:
+
+* `ghcr.io/stefanprodan/kube-tools`
+* `docker.io/stefanprodan/kube-tools`
