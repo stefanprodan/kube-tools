@@ -26,9 +26,11 @@ inputs:
     description: 'conftest version'
   kubeconform:
     description: 'kubeconform version'
+  yq:
+    description: 'yq version'
 runs:
   using: 'docker'
-  image: 'docker://ghcr.io/stefanprodan/kube-tools:v1.7.0-792b5242'
+  image: 'docker://ghcr.io/stefanprodan/kube-tools:v1.7.1'
   args:
     - ${{ inputs.command }}
     - ${{ inputs.kubectl }}
@@ -39,3 +41,4 @@ runs:
     - ${{ inputs.kubeval }}
     - ${{ inputs.conftest }}
     - ${{ inputs.kubeconform }}
+    - ${{ inputs.yq }}
