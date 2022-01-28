@@ -33,3 +33,4 @@ jobs:
             go version
             kubeaudit --help
             kubeconform --help
+            kyverno version
