@@ -67,3 +67,8 @@ curl -sL https://github.com/stedolan/jq/releases/latest/download/jq-linux64 \
 -o /usr/local/bin/jq && chmod +x /usr/local/bin/jq
 jq --version
 
+KYVERNO=1.5.7
+echo "downloading kyverno ${KYVERNO}"
+curl -sSL https://github.com/kyverno/kyverno/releases/download/v${KYVERNO}/kyverno-cli_v${KYVERNO}_linux_x86_64.tar.gz | \
+tar xz && mv kyverno /usr/local/bin/kyverno
+kyverno version

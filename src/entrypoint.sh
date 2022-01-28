@@ -57,6 +57,12 @@ if [[ "${YQ_VER}" != "" ]]; then
   -o /usr/local/bin/yq && chmod +x /usr/local/bin/yq
 fi
 
+KYVERNO_VER=${11}
+if [[ "${KYVERNO_VER}" != "" ]]; then
+  curl -sSL https://github.com/kyverno/kyverno/releases/download/v${KYVERNO_VER}/kyverno-cli_v${KYVERNO_VER}_linux_x86_64.tar.gz | \
+  tar xz && mv kyverno /usr/local/bin/kyverno
+fi
+
 echo ">>> Executing command <<<"
 echo ""
 echo ""

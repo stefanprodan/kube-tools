@@ -28,6 +28,8 @@ inputs:
     description: 'kubeconform version'
   yq:
     description: 'yq version'
+  kyverno:
+    description: 'kyverno version'
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -42,3 +44,4 @@ runs:
     - ${{ inputs.conftest }}
     - ${{ inputs.kubeconform }}
     - ${{ inputs.yq }}
+    - ${{ inputs.kyverno }}
