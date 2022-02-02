@@ -56,9 +56,9 @@ curl -sSL https://github.com/yannh/kubeconform/releases/download/v${KUBECONFORM}
 tar xz && mv kubeconform /usr/local/bin/kubeconform
 kubeconform --help
 
-YQ=4.16.1
+YQ=v4.18.1
 echo "downloading yq"
-curl -sL https://github.com/mikefarah/yq/releases/download/v${YQ}/yq_linux_amd64 \
+curl -sL https://github.com/mikefarah/yq/releases/download/${YQ}/yq_linux_amd64 \
 -o /usr/local/bin/yq && chmod +x /usr/local/bin/yq
 yq --version
 
