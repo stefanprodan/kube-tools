@@ -6,42 +6,135 @@ branding:
   color: 'blue'
 inputs:
   command:
-    description: 'command to run'
+    description: '(deprecated) command to run'
     required: true
   kubectl:
     description: 'kubectl version'
+    required: false
   kustomize:
     description: 'kustomize version'
+    required: false
   helm:
     description: 'helm version'
+    required: false
   helmv3:
     description: 'helm version'
+    required: false
   kubeseal:
     description: 'kubeseal version'
+    required: false
   kubeaudit:
     description: 'kubeaudit version'
+    required: false
   kubeval:
     description: 'kubeval version'
+    required: false
   conftest:
     description: 'conftest version'
+    required: false
   kubeconform:
     description: 'kubeconform version'
+    required: false
   yq:
     description: 'yq version'
+    required: false
   kyverno:
     description: 'kyverno version'
+    required: false
+
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
-  args:
-    - ${{ inputs.command }}
-    - ${{ inputs.kubectl }}
-    - ${{ inputs.kustomize }}
-    - ${{ inputs.helm }}
-    - ${{ inputs.helmv3 }}
-    - ${{ inputs.kubeseal }}
-    - ${{ inputs.kubeval }}
-    - ${{ inputs.conftest }}
-    - ${{ inputs.kubeconform }}
-    - ${{ inputs.yq }}
-    - ${{ inputs.kyverno }}
+  using: 'composite'
+  steps:
+    - shell: bash
+      if: '${{ inputs.kubectl }}'
+      run: |
+        KUBECTL='${{ inputs.kubectl }}'
+        curl --fail -sL https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL}/bin/linux/amd64/kubectl \
+        -o /usr/local/bin/kubectl && chmod +x /usr/local/bin/kubectl
+        kubectl version --client
+
+    - shell: bash
+      if: '${{ inputs.kustomize }}'
+      run: |
+        KUSTOMIZE_VER='${{ inputs.kustomize }}'
+        curl --fail -sL https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VER}/kustomize_v${KUSTOMIZE_VER}_linux_amd64.tar.gz | \
+        tar xz && mv kustomize /usr/local/bin/kustomize
+        kustomize version
+
+    - shell: bash
+      if: '${{ inputs.helm }}'
+      run: |
+        HELM_VER='${{ inputs.helm }}'
+        curl -sL https://get.helm.sh/helm-v${HELM_VER}-linux-amd64.tar.gz | \
+        tar xz && mv linux-amd64/helm /usr/local/bin/helm && rm -rf linux-amd64
+        helm version --client
+
+    - shell: bash
+      if: '${{ inputs.helmv3 }}'
+      run: |
+        HELM3_VER='${{ inputs.helmv3 }}'
+        curl -sL https://get.helm.sh/helm-v${HELM3_VER}-linux-amd64.tar.gz | \
+        tar xz && mv linux-amd64/helm /usr/local/bin/helm && rm -rf linux-amd64
+        helm version --client
+
+    - shell: bash
+      if: '${{ inputs.kubeseal }}'
+      run: |
+        KUBESEAL_VER='${{ inputs.kubeseal }}'
+        curl -sL https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VER}/kubeseal-linux-amd64 \
+        -o /usr/local/bin/kubeseal && chmod +x /usr/local/bin/kubeseal
+        kubeseal --version
+
+    - shell: bash
+      if: '${{ inputs.kubeaudit }}'
+      run: |
+        KUBEAUDIT_VER='${{ inputs.kubeaudit }}'
+        wget -O kubeaudit https://github.com/Shopify/kubeaudit/releases/download/${KUBEAUDIT_VER}/kubeaudit_${KUBEAUDIT_VER}_linux_amd64.tar.gz -q
+        tar xzf kubeaudit && mv kubeaudit /usr/local/bin
+        kubeaudit version
+
+    - shell: bash
+      if: '${{ inputs.kubeval }}'
+      run: |
+        KUBEVAL_VER='${{ inputs.kubeval }}'
+        curl -sL https://github.com/instrumenta/kubeval/releases/download/v${KUBEVAL_VER}/kubeval-linux-amd64.tar.gz | \
+        tar xz && mv kubeval /usr/local/bin/kubeval
+        kubeval --version
+
+    - shell: bash
+      if: '${{ inputs.conftest }}'
+      run: |
+        CONFTEST_VER='${{ inputs.conftest }}'
+        wget -O conftest https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST_VER}/conftest_${CONFTEST_VER}_Linux_x86_64.tar.gz -q
+        tar xzf conftest && mv conftest /usr/local/bin
+        conftest --version
+
+    - shell: bash
+      if: '${{ inputs.kubeconform }}'
+      run: |
+        KUBECONFORM_VER='${{ inputs.kubeconform }}'
+        curl -sSL https://github.com/yannh/kubeconform/releases/download/v${KUBECONFORM_VER}/kubeconform-linux-amd64.tar.gz | \
+        tar xz && mv kubeconform /usr/local/bin/kubeconform
+        kubeconform -v
+
+    - shell: bash
+      if: '${{ inputs.yq }}'
+      run: |
+        YQ_VER='${{ inputs.yq }}'
+        curl -sL https://github.com/mikefarah/yq/releases/download/v${YQ_VER}/yq_linux_amd64 \
+        -o /usr/local/bin/yq && chmod +x /usr/local/bin/yq
+        yq --version
+
+    - shell: bash
+      if: '${{ inputs.kyverno }}'
+      run: |
+        KYVERNO_VER='${{ inputs.kyverno }}'
+        curl -sSL https://github.com/kyverno/kyverno/releases/download/v${KYVERNO_VER}/kyverno-cli_v${KYVERNO_VER}_linux_x86_64.tar.gz | \
+        tar xz && mv kyverno /usr/local/bin/kyverno
+        kyverno version
+
+    - shell: bash
+      if: '${{ inputs.command }}'
+      run: |
+        bash -c 'set -e;  set -o pipefail; ${{ inputs.command }}'
+

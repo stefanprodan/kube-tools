@@ -34,3 +34,18 @@ jobs:
             kubeaudit --help
             kubeconform --help
             kyverno version
+      - name: test installed tools
+        run: |
+          kubectl version --client
+          kustomize version
+          helm version --client
+          helmv3 version
+          kubeval --version
+          conftest --version
+          kubeseal --version
+          yq --version
+          jq --version
+          go version
+          kubeaudit --help
+          kubeconform --help
+          kyverno version
