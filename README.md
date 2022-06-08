@@ -4,7 +4,19 @@
 [![Docker](https://img.shields.io/badge/Docker%20Hub-stefanprodan%2Fkube--tools-blue)](https://hub.docker.com/r/stefanprodan/kube-tools)
 
 Github Action with Kubernetes tools:
-kubectl, kustomize, helm, kubeval, conftest, kubeconform, jq, yq, go.
+
+* kubectl
+* go
+* yq
+* kustomize
+* helm
+* kubeseal
+* kubeval
+* conftest
+* kubeaudit
+* kubeconform
+* kyverno
+
 See the [release](https://github.com/stefanprodan/kube-tools/releases)
 page for the list of available tools and versions.
 
@@ -25,20 +37,14 @@ jobs:
         with:
           kubectl: 1.23.0
           kustomize: 4.4.1
-          helm: 2.17.0
-          helmv3: 3.7.2
+          helm: 3.7.2
           kubeseal: 0.16.0
           kubeval: v0.16.1
           conftest: 0.28.3
           kubeconform: 0.4.12
-          command: |
+       - run: |
             echo "Run conftest"
             kustomize build test/kustomize | conftest test -p test/policy -
             echo "Run kubeval"
             helmv3 template ./charts/test | kubeval --strict
 ```
-
-Container images:
-
-* `ghcr.io/stefanprodan/kube-tools`
-* `docker.io/stefanprodan/kube-tools`
