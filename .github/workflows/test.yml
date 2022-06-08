@@ -7,45 +7,37 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: conftest
+      - name: install tools
         uses: ./
         with:
-          command: |
-            kustomize build test/kustomize | conftest test -p test/policy -
+          kubectl: latest
+          go: latest
+          yq: latest
+          kustomize: latest
+          helm: latest
+          kubeseal: latest
+          kubeval: latest
+          conftest: latest
+          kubeaudit: latest
+          kubeconform: latest
+          kyverno: latest
       - name: kubeval
-        uses: ./
-        with:
-          command: |
-            kustomize build test/kustomize | kubeval --strict --ignore-missing-schemas
-      - name: tools
-        uses: ./
-        with:
-          command: |
-            kubectl version --client
-            kustomize version
-            helm version --client
-            helmv3 version
-            kubeval --version
-            conftest --version
-            kubeseal --version
-            yq --version
-            jq --version
-            go version
-            kubeaudit --help
-            kubeconform --help
-            kyverno version
+        run: |
+          kustomize build test/kustomize | kubeval --strict --ignore-missing-schemas
+      - name: conftest
+        run: |
+          kustomize build test/kustomize | conftest test -p test/policy -
       - name: test installed tools
         run: |
           kubectl version --client
+          go version
+          jq --version
+          yq --version
           kustomize version
           helm version --client
-          helmv3 version
+          kubeseal --version
           kubeval --version
           conftest --version
-          kubeseal --version
-          yq --version
-          jq --version
-          go version
-          kubeaudit --help
-          kubeconform --help
+          kubeaudit version
+          kubeconform -v
           kyverno version
