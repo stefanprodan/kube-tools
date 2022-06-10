@@ -6,7 +6,6 @@
 Github Action with Kubernetes tools:
 
 * kubectl
-* go
 * yq
 * kustomize
 * helm
@@ -39,7 +38,7 @@ jobs:
           kustomize: 4.4.1
           helm: 3.7.2
           kubeseal: 0.16.0
-          kubeval: v0.16.1
+          kubeval: 0.16.1
           conftest: 0.28.3
           kubeconform: 0.4.12
        - run: |
