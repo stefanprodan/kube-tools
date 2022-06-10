@@ -47,7 +47,8 @@ runs:
             KUBECTL_VER=$(curl -sL https://storage.googleapis.com/kubernetes-release/release/stable.txt | sed -e 's/^v//')
         fi
         curl --fail -sL "https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VER}/bin/linux/amd64/kubectl" \
-            -o /usr/local/bin/kubectl && chmod +x /usr/local/bin/kubectl
+            -o kubectl && chmod +x kubectl
+        mv kubectl /usr/local/bin/kubectl
         kubectl version --client
 
     - shell: bash
@@ -58,7 +59,8 @@ runs:
             YQ_VER=$(curl -sL https://api.github.com/repos/mikefarah/yq/releases/latest | jq -r ".tag_name" | sed -e 's/^v//')
         fi
         curl -sL https://github.com/mikefarah/yq/releases/download/v${YQ_VER}/yq_linux_amd64 \
-            -o /usr/local/bin/yq && chmod +x /usr/local/bin/yq
+            -o yq && chmod +x yq
+        mv yq /usr/local/bin/yq
         yq --version
 
     - shell: bash
