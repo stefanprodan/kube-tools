@@ -10,6 +10,7 @@ jobs:
       - name: install tools
         uses: ./
         with:
+          cache: false
           kubectl: latest
           yq: latest
           kustomize: latest

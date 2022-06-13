@@ -1,154 +1,292 @@
-name: 'Kubernetes toolset'
-description: 'Github Action with Kubernetes tools: kubectl, kustomize, helm, kubeval, kubeaudit, conftest, jq, yq, go'
-author: 'Stefan Prodan'
+name: "Kubernetes toolset"
+description: "Github Action with Kubernetes tools: kubectl, kustomize, helm, kubeval, kubeaudit, conftest, jq, yq, go"
+author: "Stefan Prodan"
 branding:
-  icon: 'command'
-  color: 'blue'
+  icon: "command"
+  color: "blue"
 inputs:
+  cache:
+    description: "Whether to enable caching"
+    required: false
+    default: "true"
   kubectl:
-    description: 'kubectl version'
+    description: "kubectl version"
     required: false
   yq:
-    description: 'yq version'
+    description: "yq version"
     required: false
   kustomize:
-    description: 'kustomize version'
+    description: "kustomize version"
     required: false
   helm:
-    description: 'helm version'
+    description: "helm version"
     required: false
   kubeseal:
-    description: 'kubeseal version'
+    description: "kubeseal version"
     required: false
   kubeval:
-    description: 'kubeval version'
+    description: "kubeval version"
     required: false
   conftest:
-    description: 'conftest version'
+    description: "conftest version"
     required: false
   kubeaudit:
-    description: 'kubeaudit version'
+    description: "kubeaudit version"
     required: false
   kubeconform:
-    description: 'kubeconform version'
+    description: "kubeconform version"
     required: false
   kyverno:
-    description: 'kyverno version'
+    description: "kyverno version"
     required: false
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
-    - shell: bash
-      if: '${{ inputs.kubectl }}'
+    - id: kubectl
+      shell: bash
+      if: "${{ inputs.kubectl }}"
       run: |
-        KUBECTL_VER='${{ inputs.kubectl }}'
-        if [ "$KUBECTL_VER" == "latest" ]; then
-            KUBECTL_VER=$(curl -sL https://storage.googleapis.com/kubernetes-release/release/stable.txt | sed -e 's/^v//')
+        if [ "${{ inputs.kubectl }}" == "latest" ]; then
+            echo "::set-output name=version::$(curl -sL https://storage.googleapis.com/kubernetes-release/release/stable.txt | sed -e 's/^v//')"
+        else
+            echo "::set-output name=version::${{ inputs.kubectl }}"
         fi
-        curl --fail -sL "https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VER}/bin/linux/amd64/kubectl" \
+
+    - id: kubectl-cache
+      uses: actions/cache@v3
+      if: "${{ inputs.kubectl && inputs.cache == 'true' }}"
+      with:
+        path: /usr/local/bin/kubectl
+        key: "${{ runner.os }}-${{ steps.kubectl.outputs.version }}"
+
+    - shell: bash
+      if: ${{ inputs.kubectl && steps.kubectl-cache.outputs.cache-hit != 'true' }}
+      run: |
+        curl --fail -sL "https://storage.googleapis.com/kubernetes-release/release/v${{ steps.kubectl.outputs.version }}/bin/linux/amd64/kubectl" \
             -o kubectl && chmod +x kubectl
         mv kubectl /usr/local/bin/kubectl
         kubectl version --client
 
-    - shell: bash
-      if: '${{ inputs.yq }}'
+    - id: yq
+      shell: bash
+      if: "${{ inputs.yq }}"
       run: |
-        YQ_VER='${{ inputs.yq }}'
-        if [ "$YQ_VER" == "latest" ]; then
-            YQ_VER=$(curl -sL https://api.github.com/repos/mikefarah/yq/releases/latest | jq -r ".tag_name" | sed -e 's/^v//')
+        if [ "${{ inputs.yq }}" == "latest" ]; then
+            echo "::set-output name=version::$(curl -sL https://api.github.com/repos/mikefarah/yq/releases/latest | jq -r ".tag_name" | sed -e 's/^v//')"
+        else
+            echo "::set-output name=version::${{ inputs.yq }}"
         fi
-        curl -sL https://github.com/mikefarah/yq/releases/download/v${YQ_VER}/yq_linux_amd64 \
+
+    - id: yq-cache
+      uses: actions/cache@v3
+      if: "${{ inputs.yq && inputs.cache == 'true' }}"
+      with:
+        path: /usr/local/bin/yq
+        key: "${{ runner.os }}-${{ steps.yq.outputs.version }}"
+
+    - shell: bash
+      if: ${{ inputs.yq && steps.yq-cache.outputs.cache-hit != 'true' }}
+      run: |
+        curl -sL https://github.com/mikefarah/yq/releases/download/v${{ steps.yq.outputs.version }}/yq_linux_amd64 \
             -o yq && chmod +x yq
         mv yq /usr/local/bin/yq
         yq --version
 
-    - shell: bash
-      if: '${{ inputs.kustomize }}'
+    - id: kustomize
+      shell: bash
+      if: "${{ inputs.kustomize }}"
       run: |
-        KUSTOMIZE_VER='${{ inputs.kustomize }}'
-        URL="https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"
-        if [ "$KUSTOMIZE_VER" == "latest" ]; then
-            KUSTOMIZE_VER=""
+        if [ "${{ inputs.kustomize }}" == "latest" ]; then
+            VER=$(curl -sL https://api.github.com/repos/kubernetes-sigs/kustomize/releases | jq -r 'sort_by(.tag_name) | last(.[].tag_name | select(. | test("^kustomize/.")))' | sed -e 's/^kustomize\/v//')
+            echo "::set-output name=version::$VER"
+        else
+            echo "::set-output name=version::${{ inputs.kustomize }}"
         fi
-        curl -s "$URL" | bash -s -- "$KUSTOMIZE_VER" /usr/local/bin/
+
+    - id: kustomize-cache
+      uses: actions/cache@v3
+      if: "${{ inputs.kustomize && inputs.cache == 'true' }}"
+      with:
+        path: /usr/local/bin/kustomize
+        key: "${{ runner.os }}-${{ steps.kustomize.outputs.version }}"
+
+    - shell: bash
+      if: ${{ inputs.kustomize && steps.kustomize-cache.outputs.cache-hit != 'true' }}
+      run: |
+        URL="https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"
+        curl -s "$URL" | bash -s -- "${{ steps.kustomize.outputs.version }}" /usr/local/bin/
         kustomize version
 
-    - shell: bash
-      if: '${{ inputs.helm }}'
+    - id: helm
+      shell: bash
+      if: "${{ inputs.helm }}"
       run: |
-        HELM_VER='${{ inputs.helm }}'
-        curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && chmod 700 get_helm.sh
-        if [ "$HELM_VER" == "latest" ]; then
-            ./get_helm.sh
+        if [ "${{ inputs.helm }}" == "latest" ]; then
+            echo "::set-output name=version::$(curl -sL https://api.github.com/repos/helm/helm/releases/latest | jq -r '.tag_name' | sed -e 's/^v//')"
         else
-            ./get_helm.sh -v "v$HELM_VER"
+            echo "::set-output name=version::${{ inputs.helm }}"
         fi
+
+    - id: helm-cache
+      uses: actions/cache@v3
+      if: "${{ inputs.helm && inputs.cache == 'true' }}"
+      with:
+        path: /usr/local/bin/helm
+        key: "${{ runner.os }}-${{ steps.helm.outputs.version }}"
+
+    - shell: bash
+      if: ${{ inputs.helm && steps.helm-cache.outputs.cache-hit != 'true' }}
+      run: |
+        curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && chmod 700 get_helm.sh
+        ./get_helm.sh -v "v${{ steps.helm.outputs.version }}"
         helm version --client
 
-    - shell: bash
-      if: '${{ inputs.kubeseal }}'
+    - id: kubeseal
+      shell: bash
+      if: "${{ inputs.kubeseal }}"
       run: |
-        KUBESEAL_VER='${{ inputs.kubeseal }}'
-        if [ "$KUBESEAL_VER" == "latest" ]; then
-            KUBESEAL_VER=$(curl -sL https://api.github.com/repos/bitnami-labs/sealed-secrets/tags | jq -rS ".[] | .name" | head -1 | sed -e "s/^v//")
+        if [ "${{ inputs.kubeseal }}" == "latest" ]; then
+            VER=$(curl -sL https://api.github.com/repos/bitnami-labs/sealed-secrets/releases | jq -r 'sort_by(.tag_name) | last(.[].tag_name | select(. | test("^v.")))' | sed -e 's/^v//')
+            echo "::set-output name=version::$VER"
+        else
+            echo "::set-output name=version::${{ inputs.kubeseal }}"
         fi
-        curl -sL https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VER}/kubeseal-${KUBESEAL_VER}-linux-amd64.tar.gz |\
-            tar xz && mv kubeseal /usr/local/bin/
-        kubeseal --version
+
+    - id: kubeseal-cache
+      uses: actions/cache@v3
+      if: "${{ inputs.kubeseal && inputs.cache == 'true' }}"
+      with:
+        path: /usr/local/bin/kubeseal
+        key: "${{ runner.os }}-${{ steps.kubeseal.outputs.version }}"
 
     - shell: bash
-      if: '${{ inputs.kubeval }}'
+      if: ${{ inputs.kubeseal && steps.kubeseal-cache.outputs.cache-hit != 'true' }}
       run: |
-        KUBEVAL_VER='${{ inputs.kubeval }}'
-        if [ "$KUBEVAL_VER" == "latest" ]; then
-            KUBEVAL_VER=$(curl -sL https://api.github.com/repos/instrumenta/kubeval/releases/latest | jq -r ".tag_name" | sed -e 's/^v//')
+        KUBESEAL_VER='${{ steps.kubeseal.outputs.version }}'
+        curl -sL https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VER}/kubeseal-${KUBESEAL_VER}-linux-amd64.tar.gz |\
+            tar xz && mv kubeseal /usr/local/bin/kubeseal
+        kubeseal --version
+
+    - id: kubeval
+      shell: bash
+      if: "${{ inputs.kubeval }}"
+      run: |
+        if [ "${{ inputs.kubeval }}" == "latest" ]; then
+            echo "::set-output name=version::$(curl -sL https://api.github.com/repos/instrumenta/kubeval/releases/latest | jq -r ".tag_name" | sed -e 's/^v//')"
+        else
+            echo "::set-output name=version::${{ inputs.kubeval }}"
         fi
-        curl -sL https://github.com/instrumenta/kubeval/releases/download/v${KUBEVAL_VER}/kubeval-linux-amd64.tar.gz |\
+
+    - id: kubeval-cache
+      uses: actions/cache@v3
+      if: "${{ inputs.kubeval && inputs.cache == 'true' }}"
+      with:
+        path: /usr/local/bin/kubeval
+        key: "${{ runner.os }}-${{ steps.kubeval.outputs.version }}"
+
+    - shell: bash
+      if: ${{ inputs.kubeval && steps.kubeval-cache.outputs.cache-hit != 'true' }}
+      run: |
+        curl -sL https://github.com/instrumenta/kubeval/releases/download/v${{ steps.kubeval.outputs.version }}/kubeval-linux-amd64.tar.gz |\
             tar xz && mv kubeval /usr/local/bin/kubeval
         kubeval --version
 
-    - shell: bash
-      if: '${{ inputs.conftest }}'
+    - id: conftest
+      shell: bash
+      if: "${{ inputs.conftest }}"
       run: |
-        CONFTEST_VER='${{ inputs.conftest }}'
-        if [ "$CONFTEST_VER" == "latest" ]; then
-            CONFTEST_VER=$(curl -sL https://api.github.com/repos/open-policy-agent/conftest/releases/latest | jq -r ".tag_name" | sed -e 's/^v//')
+        if [ "${{ inputs.conftest }}" == "latest" ]; then
+            echo "::set-output name=version::$(curl -sL https://api.github.com/repos/open-policy-agent/conftest/releases/latest | jq -r ".tag_name" | sed -e 's/^v//')"
+        else
+            echo "::set-output name=version::${{ inputs.conftest }}"
         fi
+
+    - id: conftest-cache
+      uses: actions/cache@v3
+      if: "${{ inputs.conftest && inputs.cache == 'true' }}"
+      with:
+        path: /usr/local/bin/conftest
+        key: "${{ runner.os }}-${{ steps.conftest.outputs.version }}"
+
+    - shell: bash
+      if: ${{ inputs.conftest && steps.conftest-cache.outputs.cache-hit != 'true' }}
+      run: |
+        CONFTEST_VER='${{ steps.conftest.outputs.version }}'
         wget -O conftest https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST_VER}/conftest_${CONFTEST_VER}_Linux_x86_64.tar.gz -q
-        tar xzf conftest && mv conftest /usr/local/bin
+        tar xzf conftest && mv conftest /usr/local/bin/conftest
         conftest --version
 
-    - shell: bash
-      if: '${{ inputs.kubeaudit }}'
+    - id: kubeaudit
+      shell: bash
+      if: "${{ inputs.kubeaudit }}"
       run: |
-        KUBEAUDIT_VER='${{ inputs.kubeaudit }}'
-        if [ "$KUBEAUDIT_VER" == "latest" ]; then
-            KUBEAUDIT_VER=$(curl -sL https://api.github.com/repos/Shopify/kubeaudit/releases/latest | jq -r ".tag_name" | sed -e 's/^v//')
+        if [ "${{ inputs.kubeaudit }}" == "latest" ]; then
+            echo "::set-output name=version::$(curl -sL https://api.github.com/repos/Shopify/kubeaudit/releases/latest | jq -r ".tag_name" | sed -e 's/^v//')"
+        else
+            echo "::set-output name=version::${{ inputs.kubeaudit }}"
         fi
-        wget -O kubeaudit https://github.com/Shopify/kubeaudit/releases/download/${KUBEAUDIT_VER}/kubeaudit_${KUBEAUDIT_VER}_linux_amd64.tar.gz -q
-        tar xzf kubeaudit && mv kubeaudit /usr/local/bin
-        kubeaudit version
+
+    - id: kubeaudit-cache
+      uses: actions/cache@v3
+      if: "${{ inputs.kubeaudit && inputs.cache == 'true' }}"
+      with:
+        path: /usr/local/bin/kubeaudit
+        key: "${{ runner.os }}-${{ steps.kubeaudit.outputs.version }}"
 
     - shell: bash
-      if: '${{ inputs.kubeconform }}'
+      if: ${{ inputs.kubeaudit && steps.kubeaudit-cache.outputs.cache-hit != 'true' }}
       run: |
-        KUBECONFORM_VER='${{ inputs.kubeconform }}'
-        if [ "$KUBECONFORM_VER" == "latest" ]; then
-            KUBECONFORM_VER=$(curl -sL https://api.github.com/repos/yannh/kubeconform/releases/latest | jq -r ".tag_name" | sed -e 's/^v//')
+        KUBEAUDIT_VER='${{ steps.kubeaudit.outputs.version }}'
+        wget -O kubeaudit https://github.com/Shopify/kubeaudit/releases/download/v${KUBEAUDIT_VER}/kubeaudit_${KUBEAUDIT_VER}_linux_amd64.tar.gz -q
+        tar xzf kubeaudit && mv kubeaudit /usr/local/bin/kubeaudit
+        kubeaudit version
+
+    - id: kubeconform
+      shell: bash
+      if: "${{ inputs.kubeconform }}"
+      run: |
+        if [ "${{ inputs.kubeconform }}" == "latest" ]; then
+            echo "::set-output name=version::$(curl -sL https://api.github.com/repos/yannh/kubeconform/releases/latest | jq -r ".tag_name" | sed -e 's/^v//')"
+        else
+            echo "::set-output name=version::${{ inputs.kubeconform }}"
         fi
-        curl -sSL https://github.com/yannh/kubeconform/releases/download/v${KUBECONFORM_VER}/kubeconform-linux-amd64.tar.gz |\
+
+    - id: kubeconform-cache
+      uses: actions/cache@v3
+      if: "${{ inputs.kubeconform && inputs.cache == 'true' }}"
+      with:
+        path: /usr/local/bin/kubeconform
+        key: "${{ runner.os }}-${{ steps.kubeconform.outputs.version }}"
+
+    - shell: bash
+      if: ${{ inputs.kubeconform && steps.kubeconform-cache.outputs.cache-hit != 'true' }}
+      run: |
+        curl -sSL https://github.com/yannh/kubeconform/releases/download/v${{ steps.kubeconform.outputs.version }}/kubeconform-linux-amd64.tar.gz |\
             tar xz && mv kubeconform /usr/local/bin/kubeconform
         kubeconform -v
 
-    - shell: bash
-      if: '${{ inputs.kyverno }}'
+    - id: kyverno
+      shell: bash
+      if: "${{ inputs.kyverno }}"
       run: |
-        KYVERNO_VER='${{ inputs.kyverno }}'
-        if [ "$KYVERNO_VER" == "latest" ]; then
-            KYVERNO_VER=$(curl -sL https://api.github.com/repos/kyverno/kyverno/releases/latest | jq -r ".tag_name" | sed -e 's/^v//')
+        if [ "${{ inputs.kyverno }}" == "latest" ]; then
+            echo "::set-output name=version::$(curl -sL https://api.github.com/repos/kyverno/kyverno/releases/latest | jq -r ".tag_name" | sed -e 's/^v//')"
+        else
+            echo "::set-output name=version::${{ inputs.kyverno }}"
         fi
+
+    - id: kyverno-cache
+      uses: actions/cache@v3
+      if: "${{ inputs.kyverno && inputs.cache == 'true' }}"
+      with:
+        path: /usr/local/bin/kyverno
+        key: "${{ runner.os }}-${{ steps.kyverno.outputs.version }}"
+
+    - shell: bash
+      if: ${{ inputs.kyverno && steps.kyverno-cache.outputs.cache-hit != 'true' }}
+      run: |
+        KYVERNO_VER='${{ steps.kyverno.outputs.version }}'
         curl -sSL https://github.com/kyverno/kyverno/releases/download/v${KYVERNO_VER}/kyverno-cli_v${KYVERNO_VER}_linux_x86_64.tar.gz |\
             tar xz && mv kyverno /usr/local/bin/kyverno
         kyverno version
-
