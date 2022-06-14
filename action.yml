@@ -115,6 +115,7 @@ runs:
       if: ${{ inputs.kustomize && steps.kustomize-cache.outputs.cache-hit != 'true' }}
       run: |
         URL="https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"
+        rm -f /usr/local/bin/kustomize
         curl -s "$URL" | bash -s -- "${{ steps.kustomize.outputs.version }}" /usr/local/bin/
         kustomize version
 
