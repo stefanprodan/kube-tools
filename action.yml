@@ -63,6 +63,7 @@ runs:
     - shell: bash
       if: ${{ inputs.kubectl && steps.kubectl-cache.outputs.cache-hit != 'true' }}
       run: |
+        rm -f /usr/local/bin/kubectl
         curl --fail -sL "https://storage.googleapis.com/kubernetes-release/release/v${{ steps.kubectl.outputs.version }}/bin/linux/amd64/kubectl" \
             -o kubectl && chmod +x kubectl
         mv kubectl /usr/local/bin/kubectl
@@ -88,6 +89,7 @@ runs:
     - shell: bash
       if: ${{ inputs.yq && steps.yq-cache.outputs.cache-hit != 'true' }}
       run: |
+        rm -f /usr/local/bin/yq
         curl -sL https://github.com/mikefarah/yq/releases/download/v${{ steps.yq.outputs.version }}/yq_linux_amd64 \
             -o yq && chmod +x yq
         mv yq /usr/local/bin/yq
@@ -139,6 +141,7 @@ runs:
     - shell: bash
       if: ${{ inputs.helm && steps.helm-cache.outputs.cache-hit != 'true' }}
       run: |
+        rm -f /usr/local/bin/helm
         curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && chmod 700 get_helm.sh
         ./get_helm.sh -v "v${{ steps.helm.outputs.version }}"
         helm version --client
@@ -165,6 +168,7 @@ runs:
       if: ${{ inputs.kubeseal && steps.kubeseal-cache.outputs.cache-hit != 'true' }}
       run: |
         KUBESEAL_VER='${{ steps.kubeseal.outputs.version }}'
+        rm -f /usr/local/bin/kubeseal
         curl -sL https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VER}/kubeseal-${KUBESEAL_VER}-linux-amd64.tar.gz |\
             tar xz && mv kubeseal /usr/local/bin/kubeseal
         kubeseal --version
@@ -189,6 +193,7 @@ runs:
     - shell: bash
       if: ${{ inputs.kubeval && steps.kubeval-cache.outputs.cache-hit != 'true' }}
       run: |
+        rm -f /usr/local/bin/kubeval
         curl -sL https://github.com/instrumenta/kubeval/releases/download/v${{ steps.kubeval.outputs.version }}/kubeval-linux-amd64.tar.gz |\
             tar xz && mv kubeval /usr/local/bin/kubeval
         kubeval --version
@@ -214,6 +219,7 @@ runs:
       if: ${{ inputs.conftest && steps.conftest-cache.outputs.cache-hit != 'true' }}
       run: |
         CONFTEST_VER='${{ steps.conftest.outputs.version }}'
+        rm -f /usr/local/bin/conftest
         wget -O conftest https://github.com/open-policy-agent/conftest/releases/download/v${CONFTEST_VER}/conftest_${CONFTEST_VER}_Linux_x86_64.tar.gz -q
         tar xzf conftest && mv conftest /usr/local/bin/conftest
         conftest --version
@@ -239,6 +245,7 @@ runs:
       if: ${{ inputs.kubeaudit && steps.kubeaudit-cache.outputs.cache-hit != 'true' }}
       run: |
         KUBEAUDIT_VER='${{ steps.kubeaudit.outputs.version }}'
+        rm -f /usr/local/bin/kubeaudit
         wget -O kubeaudit https://github.com/Shopify/kubeaudit/releases/download/v${KUBEAUDIT_VER}/kubeaudit_${KUBEAUDIT_VER}_linux_amd64.tar.gz -q
         tar xzf kubeaudit && mv kubeaudit /usr/local/bin/kubeaudit
         kubeaudit version
@@ -263,6 +270,7 @@ runs:
     - shell: bash
       if: ${{ inputs.kubeconform && steps.kubeconform-cache.outputs.cache-hit != 'true' }}
       run: |
+        rm -f /usr/local/bin/kubeconform
         curl -sSL https://github.com/yannh/kubeconform/releases/download/v${{ steps.kubeconform.outputs.version }}/kubeconform-linux-amd64.tar.gz |\
             tar xz && mv kubeconform /usr/local/bin/kubeconform
         kubeconform -v
@@ -288,6 +296,7 @@ runs:
       if: ${{ inputs.kyverno && steps.kyverno-cache.outputs.cache-hit != 'true' }}
       run: |
         KYVERNO_VER='${{ steps.kyverno.outputs.version }}'
+        rm -f /usr/local/bin/kyverno
         curl -sSL https://github.com/kyverno/kyverno/releases/download/v${KYVERNO_VER}/kyverno-cli_v${KYVERNO_VER}_linux_x86_64.tar.gz |\
             tar xz && mv kyverno /usr/local/bin/kyverno
         kyverno version
