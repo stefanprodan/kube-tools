@@ -5,16 +5,16 @@
 
 Github Action with Kubernetes tools:
 
-* kubectl
-* yq
-* kustomize
-* helm
-* kubeseal
-* kubeval
-* conftest
-* kubeaudit
-* kubeconform
-* kyverno
+* [kubectl](https://github.com/kubernetes/kubectl)
+* [yq](https://github.com/mikefarah/yq)
+* [kustomize](https://github.com/kubernetes-sigs/kustomize)
+* [helm](https://github.com/helm/helm)
+* [kubeseal](https://github.com/bitnami-labs/sealed-secrets)
+* [kubeval](https://github.com/instrumenta/kubeval)
+* [conftest](https://github.com/open-policy-agent/conftest)
+* [kubeaudit](https://github.com/Shopify/kubeaudit)
+* [kubeconform](https://github.com/yannh/kubeconform)
+* [kyverno](https://github.com/kyverno/kyverno)
 
 See the [release](https://github.com/stefanprodan/kube-tools/releases)
 page for the list of available tools and versions.
