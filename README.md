@@ -1,44 +1,22 @@
 # kube-tools
 
-![CI](https://github.com/stefanprodan/kube-tools/workflows/CI/badge.svg)
-[![Docker](https://img.shields.io/badge/Docker%20Hub-stefanprodan%2Fkube--tools-blue)](https://hub.docker.com/r/stefanprodan/kube-tools)
+The kube-tools GitHub Action has been deprecated in favor of
+[Arkade](https://github.com/alexellis/arkade) which offers overs 100 CLI tools.
 
-Github Action with Kubernetes tools:
-kubectl, kustomize, helm, kubeval, conftest, kubeconform, jq, yq, go.
-See the [release](https://github.com/stefanprodan/kube-tools/releases)
-page for the list of available tools and versions.
+To migrate your workflows from kube-tools to Arkade,
+you can use the [arkade-get](https://github.com/alexellis/arkade-get)
+GitHub Action as a drop-in replacement.
 
-GitHub Workflow example:
+Example:
 
 ```yaml
-name: CI
-
-on: [push, pull_request]
-
-jobs:
-  test-action:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run Kubernetes tools
-        uses: stefanprodan/kube-tools@v1
-        with:
-          kubectl: 1.23.0
-          kustomize: 4.4.1
-          helm: 2.17.0
-          helmv3: 3.7.2
-          kubeseal: 0.16.0
-          kubeval: v0.16.1
-          conftest: 0.28.3
-          kubeconform: 0.4.12
-          command: |
-            echo "Run conftest"
-            kustomize build test/kustomize | conftest test -p test/policy -
-            echo "Run kubeval"
-            helmv3 template ./charts/test | kubeval --strict
+    - uses: alexellis/setup-arkade@v1
+    - uses: alexellis/arkade-get@master
+      with:
+        kubectl: latest
+        kustomize: latest
+        kubeconform: latest
+        helm: latest
+        jq: latest
+        yq: latest
 ```
-
-Container images:
-
-* `ghcr.io/stefanprodan/kube-tools`
-* `docker.io/stefanprodan/kube-tools`
