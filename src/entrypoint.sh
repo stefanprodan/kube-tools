@@ -53,7 +53,7 @@ fi
 
 YQ_VER=${10}
 if [[ "${YQ_VER}" != "" ]]; then
-  curl -sL https://github.com/mikefarah/yq/releases/download/v${YQ_VER}/yq_linux_amd64 \
+  curl -sL https://github.com/mikefarah/yq/releases/download/${YQ_VER}/yq_linux_amd64 \
   -o /usr/local/bin/yq && chmod +x /usr/local/bin/yq
 fi
 
